@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
-    # 'results'
+    'results'
 ]
 
 MIDDLEWARE = [
@@ -83,6 +83,13 @@ DATABASES = {
     }
 }
 
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher'
+]
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -121,3 +128,39 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# OpenFoodFacts API
+off_locale = 'fr'
+off_url = "https://{}.openfoodfacts.org/cgi/search.pl?".format(off_locale)
+
+off_headers = {'user-agent': 'OC_P8/0.1'}
+
+off_params = {
+    "action": "process",
+    "page": 1,
+    # only 200 to avoid timeout
+    "page_size": 200,
+    "tagtype_0": "categories",
+    "tag_contains_0": "contains",
+    "tag_0": "",
+    "json": True
+}
+
+off_cat_list = list()
+off_cat_list.append("desserts-au-chocolat")
+off_cat_list.append("boissons-instantanees")
+off_cat_list.append("cereales-au-chocolat")
+
+off_fields = [
+    "product_name", "brands", "code", "categories",
+    "nutrition_grades", "stores", "url"
+]
+
+off_api = {
+    "url": off_url,
+    "headers": off_headers,
+    "params": off_params,
+    "categories": off_cat_list,
+    "fields": off_fields
+}
