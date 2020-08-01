@@ -66,7 +66,7 @@ class Command(BaseCommand):
             cat_prod = db_cat_prod(category_id=cat.id, product_id=prod_db.id)
             cat_prod.save()
 
-    def handle(self, *args, **options):
+    def run(self):
         for cat in self.categories:
             # add cat db
             cat_db = db_cat(category_name=cat)
@@ -89,3 +89,10 @@ class Command(BaseCommand):
                             break
             self.keep_nutri_g_only()
             self.insert_in_db(cat_db)
+
+    def handle(self, *args, **options):
+        if db_cat.objects.all().exists():
+            print('[*] DB already populated')
+        else:
+            print('[*] DB empty, running populatedb.run()')
+            self.run()
