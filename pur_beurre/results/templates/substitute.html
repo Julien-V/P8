@@ -1,8 +1,21 @@
 {% extends "base.html" %}
 
 {% block page_content %}
-<div>
-	<p>susbtitute</p>
-</div>
+<section class="page-section" id="results">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-lg-8 text-center">
+				<h2>Vos aliments substitués :</h2>
+				{% for product in subs %}
+					<h3>{{ product.product_name }}</h3>
+					<p>{{ product.stores }}</p>
+					<p>{{ product.nutrition_grades }}</p>
+					<img src="{{ product.image_url }}">
+					<hr class="divider my-4">
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</section>
 
 {% endblock %}

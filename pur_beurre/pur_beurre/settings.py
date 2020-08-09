@@ -128,7 +128,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-
+LOGIN_URL = './user_auth'
 
 # OpenFoodFacts API
 off_locale = 'fr'
@@ -154,7 +154,7 @@ off_cat_list.append("cereales-au-chocolat")
 
 off_fields = [
     "product_name", "brands", "code", "categories",
-    "nutrition_grades", "stores", "url"
+    "nutrition_grades", "stores", "url", "image_url"
 ]
 
 off_api = {

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+<section class="page-section bg-primary" id="login">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8">
+				<form method="post" action="./user_reg">
+    				{% csrf_token %}
+    				{{ form.as_p }}
+    				<input type="submit" value="Créer le compte" />
+				</form>
+				<a href="./user_auth">Se connecter</a>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock %}
