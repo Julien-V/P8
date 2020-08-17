@@ -9,5 +9,6 @@ urlpatterns = [
     path('user_auth', views.user_auth, name='authentification'),
     path('user_deauth', views.user_deauth, name='deauthentification'),
     path('user_reg', views.user_reg, name="register"),
+    path('legals', views.legals, name="legals"),
     path('home', views.index, name='home')
 ]

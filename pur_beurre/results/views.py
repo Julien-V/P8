@@ -116,3 +116,7 @@ def user_reg(req):
     else:
         form = RegisterForm()
     return render(req, 'register.html', locals())
+
+
+def legals(req):
+    return render(req, 'legals.html')
