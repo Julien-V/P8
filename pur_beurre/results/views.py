@@ -118,5 +118,9 @@ def user_reg(req):
     return render(req, 'register.html', locals())
 
 
-def legals(req):
-    return render(req, 'legals.html')
+def terms(req):
+    return render(req, 'terms.html')
+
+
+def product(req):
+    return render(req, 'product.html')
