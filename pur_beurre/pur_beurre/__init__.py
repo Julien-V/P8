@@ -36,7 +36,7 @@ def exist_db():
     return exist
 
 
-if not exist_db():
+if not exist_db() and not os.environ.get('IS_HEROKU', False):
     print("[!] No DB")
     if create_db():
         print("[*] DB created")
