@@ -123,4 +123,16 @@ def terms(req):
 
 
 def product(req):
-    return render(req, 'product.html')
+    query = req.GET.get('code')
+    if not query:
+        prod = Pb_Products.objects.all()
+    else:
+        prod = Pb_Products.objects.filter(
+            code__contains=query)[0]
+    if not prod:
+        pass
+        # return 404
+    else:
+        ng = prod.nutrition_grades.upper()
+        ng_image = f"/static/assets/img/Nutri-{ng}.png"
+    return render(req, 'product.html', locals())

@@ -1,5 +1,20 @@
 {% extends "base.html" %}
 
 {% block page_content %}
-<h1>Product</h1>
+<section class="page-section show-product">
+	<div class="container" style="background-image: src('{{ prod.image_url }}');">
+		<h1>{{ prod.product_name }}</h1>
+	</div>
+</section>
+<section class="page-section bg-primary" id="product">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8">
+				<img type="image/png" src="{{ ng_image }}"/>
+			</div>
+		</div>
+		<div class="text-center">
+			<a href="{{ prod.url }}"><button>Voir la fiche d'OpenFoodFacts</button></a>
+		</div>
+	</div>
 {% endblock %}

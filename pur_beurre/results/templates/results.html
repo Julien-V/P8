@@ -18,14 +18,12 @@
 			<div class="col-lg-8 text-center">
 				<h2>Vous pouvez remplacer cet aliment par :</h2>
 				{% for product in products %}
-				<form action="./substitute" method="post">
 					{% csrf_token %}
-					<p>{{ product.product_name }}</p>
-					<p>{{ product.nutrition_grades }}</p>
-					<img src="{{ product.image_url }}">
-					<input name="code" type="hidden" value='{{ product.code }}'>
-					<input type="submit" value="Ajouter aux favoris"/>
-				</form>
+					<a href="./product?code={{ product.code }}">
+						<img src="{{ product.image_url }}"/>
+						<p>{{ product.product_name }}</p>
+						<p>{{ product.nutrition_grades }}</p>
+				</a>
 				{% endfor %}
 			</div>
 		</div>

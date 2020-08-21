@@ -8,6 +8,7 @@
     <link rel="icon" type="image/png" href="static/assets/favicon.png"/>
     <!-- Font Awesome icons (free version)-->
     <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
+    <link href="/static/css/icomoon.css" rel="stylesheet" type="text/css">
     <!-- Google fonts-->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Scope+One" rel="stylesheet" type="text/css">
@@ -17,20 +18,38 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="static/css/styles.css" rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="static/css/custom.css">
 </head>
 <body id="page-top">
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+        <a class="navbar-brand js-scroll-trigger" href="./home">
+            <img id="logo-img" class="img-fluid" type="image/png" src="static/assets/img/logo_pur_beurre.png"/> Pur Beurre</a>
         <div class="container">
-            <a class="navbar-brand js-scroll-trigger" href="./home">
-            	<img class="img-fluid" type="image/png" style="max-width: 20%" src="static/assets/img/logo_pur_beurre.png"/> Pur Beurre</a>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             	<span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto my-2 my-lg-0">
+                    <form action="{% url 'search_results' %}" method="get">
+                        {% csrf_token %}
+                        <input id="navbar-input" name="query" size="12" placeholder="Chercher">
+                    </form>
                 	{% if user.is_authenticated %}
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="./home"><i class="fas fa-user"></i></a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="./substitute"><img type="image/png" src="static/assets/img/carrot.png"/></a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="./user_deauth"><i class="fas fa-sign-out-alt"></i></a></li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="./home">
+                            <span id="navbar-icon" class="icon-user"></span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="./substitute">
+                            <span id="navbar-icon" class="icon-carrot"></span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="./user_deauth">
+                            <span id="navbar-icon" class="icon-sign-out"></span>
+                        </a>
+                    </li>
                     {% else %}
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="./user_auth">Se connecter</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="./user_reg">S'inscrire</a></li>
