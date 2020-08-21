@@ -1,11 +1,14 @@
+import os
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+
+DATABASE_URL = os.environ['DATABASE_URL']
 
 
 def create_db():
     sql = "CREATE DATABASE pur_beurre WITH ENCODING='utf8'"
     try:
-        conn = psycopg2.connect("dbname=postgres")
+        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
         c = conn.cursor()
         c.execute(sql)
