@@ -167,6 +167,7 @@ off_api = {
     "fields": off_fields
 }
 
+print("HEROKU : ", os.environ.get('IS_HEROKU', False))
 # For Heroku
 if os.environ.get('IS_HEROKU', None):
     PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
