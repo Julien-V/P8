@@ -12,9 +12,13 @@ def create_db():
     sql = "CREATE DATABASE pur_beurre WITH ENCODING='utf8'"
     try:
         conn = psycopg2.connect(DATABASE)
+        print("1")
         conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+        print("2")
         c = conn.cursor()
+        print("3")
         c.execute(sql)
+        print("4")
         conn.close()
         return True
     except Exception as e:

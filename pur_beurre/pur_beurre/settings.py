@@ -168,10 +168,11 @@ off_api = {
 }
 
 # For Heroku
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
-DATABASES['default'] = dj_database_url.config(
-    conn_max_age=600, ssl_require=True)
+if os.environ.get('IS_HEROKU', None):
+    PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+    STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+    DATABASES['default'] = dj_database_url.config(
+        conn_max_age=600, ssl_require=True)
 
 # Configure Django App for Heroku.
 django_heroku.settings(locals())
