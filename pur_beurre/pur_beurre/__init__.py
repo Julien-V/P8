@@ -2,25 +2,30 @@ import os
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
-DATABASE_URL = os.environ['DATABASE_URL']
+if os.environ.get('IS_HEROKU', None):
+    DATABASE = os.environ['DATABASE_URL']
+else:
+    DATABASE = "dbname=postgres"
 
 
 def create_db():
     sql = "CREATE DATABASE pur_beurre WITH ENCODING='utf8'"
     try:
-        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+        conn = psycopg2.connect(DATABASE)
         conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
         c = conn.cursor()
         c.execute(sql)
         conn.close()
+        return True
     except Exception as e:
         print(e)
+        return False
 
 
 def exist_db():
     exist = True
     try:
-        conn = psycopg2.connect('dbname=pur_beurre')
+        conn = psycopg2.connect(DATABASE)
         conn.close()
     except psycopg2.OperationalError as e:
         exist = False
@@ -29,5 +34,7 @@ def exist_db():
 
 if not exist_db():
     print("[!] No DB")
-    create_db()
-    print("[*] DB created")
+    if create_db():
+        print("[*] DB created")
+    else:
+        print("[*] Error")
