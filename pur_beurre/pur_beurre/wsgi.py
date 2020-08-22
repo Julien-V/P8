@@ -11,11 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-if os.environ.get('IS_HEROKU', False):
-    os.environ.setdefault(
-        'DJANGO_SETTINGS_MODULE', 'pur_beurre.pur_beurre.settings')
-else:
-    os.environ.setdefault(
-        'DJANGO_SETTINGS_MODULE', 'pur_beurre.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pur_beurre.settings')
 
 application = get_wsgi_application()
