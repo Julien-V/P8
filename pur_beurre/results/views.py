@@ -135,4 +135,8 @@ def product(req):
     else:
         ng = prod.nutrition_grades.upper()
         ng_image = f"/static/assets/img/Nutri-{ng}.png"
-    return render(req, 'product.html', locals())
+        context = {
+            'ng_image': ng_image,
+            'product_searched': prod
+        }
+    return render(req, 'product.html', context)

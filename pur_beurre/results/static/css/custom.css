@@ -14,3 +14,17 @@
 #contact-icon {
 	font-size: xxx-large;
 }
+
+#masthead-product:after {
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+@media (min-width: 992px) {
+  #masthead-product {
+    height: 20vh;
+    min-height: 20rem;
+    padding-top: 4.5rem;
+    padding-bottom: 0;
+  }
+}

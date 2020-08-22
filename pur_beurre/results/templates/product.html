@@ -1,11 +1,6 @@
-{% extends "base.html" %}
+{% extends "base_results.html" %}
 
-{% block page_content %}
-<section class="page-section show-product">
-	<div class="container" style="background-image: src('{{ prod.image_url }}');">
-		<h1>{{ prod.product_name }}</h1>
-	</div>
-</section>
+{% block page_content_extended %}
 <section class="page-section bg-primary" id="product">
 	<div class="container">
 		<div class="row">
