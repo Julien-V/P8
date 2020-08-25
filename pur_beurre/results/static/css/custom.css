@@ -55,8 +55,11 @@
 	border-radius: 50%;
 	top:-10px;
 	right:-5px;
-	padding: 5px 10px;
+	padding: 5px 15px;
 	text-transform: uppercase;
+	-webkit-text-stroke: 1px #000000d1;
+	font-size: xx-large;
+	font-family: "Open Sans";
 }
 
 .btn-subs-submit {
