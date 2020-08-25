@@ -1,3 +1,10 @@
+:root {
+	--ng_a: green;
+	--ng_b: lightgreen;
+	--ng_c: yellow;
+	--ng_d: orange;
+	--ng_e: red;
+} 
 #logo-img {
 	max-width: 10%;
 }
@@ -31,4 +38,34 @@
 
 #remy-img, #colette-img {
 	height: 200px;
+}
+
+#product-img {
+	width: 60%;
+}
+
+#product-save-icon {
+	color: #f4623a;
+}
+
+#nutrition-grades-bubble {
+	position: absolute;
+	background-color: red;
+	color: white;
+	border-radius: 50%;
+	top:-10px;
+	right:-5px;
+	padding: 5px 10px;
+	text-transform: uppercase;
+}
+
+.btn-subs-submit {
+	background: none!important;
+  	border: none;
+  	padding: 0!important;
+  	cursor: pointer;
+}
+
+#product-col {
+	padding-bottom: 10%;
 }
