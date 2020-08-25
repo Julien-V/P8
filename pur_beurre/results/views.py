@@ -140,3 +140,8 @@ def product(req):
             'product_searched': prod
         }
     return render(req, 'product.html', context)
+
+
+@login_required
+def account(req):
+    return render(req, 'account.html', locals())
