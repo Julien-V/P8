@@ -156,7 +156,12 @@ off_cat_list.append("cereales-au-chocolat")
 
 off_fields = [
     "product_name", "brands", "code", "categories",
-    "nutrition_grades", "stores", "url", "image_url"
+    "nutrition_grades", "stores", "url", "image_url", "nutriments"
+]
+
+off_req100 = [
+    "fat_100g", "saturated-fat_100g",
+    "sugars_100g", "salt_100g"
 ]
 
 off_api = {
@@ -164,7 +169,8 @@ off_api = {
     "headers": off_headers,
     "params": off_params,
     "categories": off_cat_list,
-    "fields": off_fields
+    "fields": off_fields,
+    "req100": off_req100
 }
 
 # For Heroku

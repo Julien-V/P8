@@ -16,6 +16,7 @@ class Pb_Products(models.Model):
     stores = models.TextField(null=True)
     url = models.TextField()
     image_url = models.TextField()
+    req100 = models.TextField()
     added_timestamp = models.BigIntegerField()
     updated_timestamp = models.BigIntegerField(null=True)
 

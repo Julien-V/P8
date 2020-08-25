@@ -4,21 +4,19 @@ from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
 if os.environ.get('IS_HEROKU', None):
     DATABASE = os.environ['DATABASE_URL']
+    DATABASE2 = None
 else:
     DATABASE = "dbname=postgres"
+    DATABASE2 = "dbname=pur_beurre"
 
 
 def create_db():
     sql = "CREATE DATABASE pur_beurre WITH ENCODING='utf8'"
     try:
         conn = psycopg2.connect(DATABASE)
-        print("1")
         conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-        print("2")
         c = conn.cursor()
-        print("3")
         c.execute(sql)
-        print("4")
         conn.close()
         return True
     except Exception as e:
@@ -29,7 +27,10 @@ def create_db():
 def exist_db():
     exist = True
     try:
-        conn = psycopg2.connect(DATABASE)
+        if DATABASE2:
+            conn = psycopg2.connect(DATABASE2)
+        else:
+            conn = psycopg2.connect(DATABASE)
         conn.close()
     except psycopg2.OperationalError as e:
         exist = False

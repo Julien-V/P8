@@ -19,6 +19,7 @@ class Command(BaseCommand):
         self.params = off_api['params']
         self.categories = off_api['categories']
         self.fields = off_api['fields']
+        self.req100 = off_api['req100']
         self.count = 0
 
     def keep_nutri_g_only(self):
@@ -58,6 +59,15 @@ class Command(BaseCommand):
             for key in product.keys():
                 if key in self.fields:
                     prod_dict[key] = product[key]
+            # Get req100 from 'nutriments'
+            if 'nutriments' in prod_dict.keys():
+                req100_temp = dict()
+                for key in self.req100:
+                    if key in prod_dict['nutriments']:
+                        req100_temp[key] = prod_dict['nutriments'][key]
+                req100 = json.dumps(req100_temp)
+                prod_dict['req100'] = req100
+                prod_dict.pop('nutriments', None)
             ts = datetime.datetime.now().timestamp()
             prod_dict['added_timestamp'] = int(ts)
             # insert into Pb_Products
