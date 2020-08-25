@@ -4,7 +4,16 @@
 	--ng_c: yellow;
 	--ng_d: orange;
 	--ng_e: red;
-} 
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: "Open Sans";
+}
+
+p, a {
+	font-family: "Scope One";
+}
+
 #logo-img {
 	max-width: 10%;
 }
