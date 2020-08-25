@@ -31,7 +31,8 @@ p, a {
 	font-size: xxx-large;
 }
 
-#masthead-product:after {
+#masthead-product {
+	background-size: initial;
 	background-repeat: no-repeat;
 	background-position: center;
 }

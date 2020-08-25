@@ -4,6 +4,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
+import json
+
 from datetime import datetime as dt
 
 from results.models import Pb_Categories_Products as pb_cat_prod
@@ -133,11 +135,13 @@ def product(req):
         pass
         # return 404
     else:
+        req100 = json.loads(prod.req100.replace('-', ''))
         ng = prod.nutrition_grades.upper()
         ng_image = f"/static/assets/img/Nutri-{ng}.png"
         context = {
             'ng_image': ng_image,
-            'product_searched': prod
+            'product_searched': prod,
+            'req100': req100
         }
     return render(req, 'product.html', context)
 
