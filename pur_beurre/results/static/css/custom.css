@@ -4,6 +4,11 @@
 	--ng_c: yellow;
 	--ng_d: orange;
 	--ng_e: red;
+	--moules-frites: #345a61;
+	--moules-frites-a: #345a61b5;
+	--rooibos-chocolat: #c45525;
+	--rigolo: #86ebe6;
+	--rigolo-a: #86ebe6b5;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -81,4 +86,14 @@ p, a {
 
 #product-col {
 	padding-bottom: 10%;
+}
+
+#connection-div {
+	background-color: var(--rigolo-a);
+	border-radius: 1%;
+	color: var(--rooibos-chocolat);
+}
+
+#connection-form, #register-form {
+	font-weight: bold;
 }
