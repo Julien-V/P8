@@ -70,12 +70,12 @@ def substitute(req):
     if req.method == "POST":
         query = req.POST.get('code')
         if not query:
-            return redirect('./home')
+            return redirect('./')
         else:
             prod = Pb_Products.objects.filter(
                 code__contains=int(query))
         if not prod.exists():
-            return redirect('./home')
+            return redirect('./')
         user = User.objects.filter(username__contains=req.user)[0]
         fav = Pb_Favorite(
             user_id=user,
@@ -88,7 +88,8 @@ def substitute(req):
             username__contains=req.user)[0]
         subs = Pb_Favorite.objects.filter(user_id=user)
         context = {
-            "subs": [x.product_id for x in subs]
+            "subs": [x.product_id for x in subs],
+            "masthead_title": "Mes Aliments"
         }
         return render(req, "substitute.html", context)
 
@@ -116,7 +117,7 @@ def user_auth(req):
 @login_required
 def user_deauth(req):
     logout(req)
-    return redirect("./home")
+    return redirect("./")
 
 
 def user_reg(req):
@@ -129,14 +130,17 @@ def user_reg(req):
             form = RegisterForm(temp)
             if form.is_valid():
                 form.save()
-                return redirect("/home")
+                return redirect("/")
     else:
         form = RegisterForm()
     return render(req, 'register.html', locals())
 
 
 def terms(req):
-    return render(req, 'terms.html')
+    context = {
+        "masthead_title": "Mentions légales"
+    }
+    return render(req, 'terms.html', context)
 
 
 def product(req):
@@ -163,4 +167,9 @@ def product(req):
 
 @login_required
 def account(req):
-    return render(req, 'account.html', locals())
+    f_name = req.user.first_name
+    l_name = req.user.last_name
+    context = {
+        'masthead_title': f"{f_name} {l_name}"
+    }
+    return render(req, 'account.html', context)
