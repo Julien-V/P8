@@ -21,32 +21,47 @@ def index(req):
 
 # Create your views here.
 def search_results(req):
+    results_exists = True
     query = req.GET.get('query')
-    if not query:
+    if not query or not len(query.split()):
         prod = Pb_Products.objects.all()
+        results_exists = False
     else:
         prod = Pb_Products.objects.filter(
             product_name__icontains=query)
     if not prod.exists():
+        results_exists = False
         prod = Pb_Products.objects.all()
-    nG = 'nutrition_grades'
     # get cat of first elem in prod
     choosen_nG = prod[0].nutrition_grades
     cat = pb_cat_prod.objects.filter(product=prod[0])[0].category
     # get substitutes for choosen cat
     elem_list = pb_cat_prod.objects.filter(category=cat)
-    prod_list = [x.product for x in elem_list]
-    # get substitutes with better nutrition_grades than product's
-    subs_list = [x for x in prod_list if x.nutrition_grades < choosen_nG]
-    # sort them
-    sorted_subs_list = sorted(
-        subs_list,
-        key=lambda i: i.nutrition_grades
-    )
-    context = {
-        'product_searched': prod[0],
-        'products': sorted_subs_list
-    }
+    if results_exists:
+        prod_list = [x.product for x in elem_list]
+        # get substitutes with better nutrition_grades than product's
+        subs_list = [x for x in prod_list if x.nutrition_grades < choosen_nG]
+        # sort them
+        sorted_subs_list = sorted(
+            subs_list,
+            key=lambda i: i.nutrition_grades
+        )
+        context = {
+            'product_searched': prod[0],
+            'masthead_title': prod[0].product_name,
+            'products': sorted_subs_list
+        }
+    else:
+        prod_list = prod
+        sorted_prod_list = sorted(
+            prod_list,
+            key=lambda i: i.nutrition_grades
+        )
+        context = {
+            'product_searched': None,
+            'masthead_title': "Aucun résultat",
+            'products': sorted_prod_list
+        }
     return render(req, "results.html", context)
 
 
