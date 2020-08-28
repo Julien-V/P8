@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 
+from django.http import HttpResponseNotFound
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -151,8 +153,7 @@ def product(req):
         prod = Pb_Products.objects.filter(
             code__contains=query)[0]
     if not prod:
-        pass
-        # return 404
+        return HttpResponseNotFound()
     else:
         req100 = json.loads(prod.req100.replace('-', ''))
         ng = prod.nutrition_grades.upper()
