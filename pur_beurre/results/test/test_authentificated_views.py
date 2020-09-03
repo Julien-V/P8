@@ -9,9 +9,12 @@ from django.urls import reverse
 
 from results.models import Pb_Favorite
 
-
+###############################################################################
+# results.views.substitute
+###############################################################################
 @pytest.mark.django_db
 def test_add_subs(login_user):
+    """Adding a susbstitute to fav"""
     context = {"code": 3023290008393}
     client = login_user()
     url = reverse('substitute')
@@ -28,6 +31,7 @@ def test_add_subs(login_user):
 
 @pytest.mark.django_db
 def test_get_subs(subs_added):
+    """Get favorite list"""
     client = subs_added()
     url = reverse('substitute')
     response = client.get(url)
@@ -37,6 +41,9 @@ def test_get_subs(subs_added):
     assert product_col.find("p").contents[0] == "Sveltesse choco noir"
 
 
+###############################################################################
+# results.views.user_deauth
+###############################################################################
 @pytest.mark.django_db
 def test_logout_view(login_user):
     client = login_user()

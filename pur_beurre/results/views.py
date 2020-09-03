@@ -21,8 +21,9 @@ def index(req):
     return render(req, "index.html")
 
 
-# Create your views here.
 def search_results(req):
+    """This view searchs substitutes with better
+    nutrition grades and display them"""
     results_exists = True
     query = req.GET.get('query')
     if not query or not len(query.split()):
@@ -54,6 +55,9 @@ def search_results(req):
             'products': sorted_subs_list
         }
     else:
+        # if prod.exists() == False
+        # or if results_exists == False
+        # all products in db are displayed
         prod_list = prod
         sorted_prod_list = sorted(
             prod_list,
@@ -69,6 +73,8 @@ def search_results(req):
 
 @login_required
 def substitute(req):
+    """This view saves a substitute in Pb_Favorite
+    or displays saved substitute"""
     if req.method == "POST":
         query = req.POST.get('code')
         if not query:
@@ -146,6 +152,7 @@ def terms(req):
 
 
 def product(req):
+    """This view display product's page"""
     query = req.GET.get('code')
     if not query:
         prod = Pb_Products.objects.all()

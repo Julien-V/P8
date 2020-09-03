@@ -6,12 +6,20 @@ import pytest
 from django.urls import reverse
 
 
+###############################################################################
+# results.views.home
+# results.views.terms
+# results.views.authentification
+# results.views.register
+# results.views.search_results
+# results.views.product
+###############################################################################
 @pytest.mark.django_db
 @pytest.mark.parametrize(
     'view_name, context',
     [
-        ("terms", {}),
         ('home', {}),
+        ("terms", {}),
         ('authentification', {}),
         ('register', {}),
         ('search_results', {'query': 'Petit Nesquik'}),
@@ -24,10 +32,14 @@ def test_views_public(client, view_name, context):
     if not context:
         response = client.get(url)
     else:
+        # some views needs parameters
         response = client.get(url, context)
     assert response.status_code == 200
 
 
+###############################################################################
+# results.views.user_reg
+###############################################################################
 @pytest.mark.django_db
 def test_register_view(client):
     """Test Register View"""
@@ -44,7 +56,9 @@ def test_register_view(client):
     assert response.status_code == 302
     assert response.url == reverse('home')
 
-
+###############################################################################
+# results.views.user_auth
+###############################################################################
 @pytest.mark.django_db
 def test_login_view(client, reg_user):
     """Test login view"""

@@ -21,10 +21,12 @@ def j(json_file):
     return json.loads(json_file)
 
 
+###############################################################################
+# results.management.commands.populatedb.Command
+###############################################################################
 @pytest.mark.skip()
 @pytest.mark.django_db
 class TestPopulateDB():
-
     def test_valid(self, patch_get_and_load):
         popdb = Command()
         patch_get_and_load.values = j("populatedb_valid.json")

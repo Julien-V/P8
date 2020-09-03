@@ -16,12 +16,15 @@ from results.models import Pb_Favorite
 
 @pytest.fixture(scope='session')
 def django_db_setup(django_db_setup, django_db_blocker):
+    """This fixture load data saved with './manage.py dumpdata'
+    command"""
     with django_db_blocker.unblock():
         call_command('loaddata', 'results_data.json')
 
 
 @pytest.fixture
 def reg_user():
+    """This fixture registers usertest"""
     def make_reg():
         User.objects.create_user(
                 username="usertest",
@@ -32,6 +35,7 @@ def reg_user():
 
 @pytest.fixture
 def login_user(client, reg_user):
+    """This fixture registers and log in usertest"""
     def make_login():
         reg_user()
         client.login(
@@ -44,12 +48,13 @@ def login_user(client, reg_user):
 
 @pytest.fixture
 def subs_added(login_user):
+    """This fixture adds a substitute in Pb_Favorite"""
     def make_subs():
         context = {"code": 3023290008393}
         client = login_user()
         url = reverse('substitute')
-        response = client.post(url, context)
-        # product code should be in Pb_Favorite
+        client.post(url, context)
+        # now product's code should be in Pb_Favorite
         user = client.session['_auth_user_id']
         subs = Pb_Favorite.objects.filter(user_id=user)
         prods_code = [x.product_id.code for x in subs]
