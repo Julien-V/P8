@@ -17,8 +17,18 @@ from results.models import Pb_Favorite
 from results.forms import ConnectionForm, RegisterForm
 
 
+###############################################################################
+# Public views
+###############################################################################
 def index(req):
     return render(req, "index.html")
+
+
+def terms(req):
+    context = {
+        "masthead_title": "Mentions légales"
+    }
+    return render(req, 'terms.html', context)
 
 
 def search_results(req):
@@ -71,6 +81,69 @@ def search_results(req):
     return render(req, "results.html", context)
 
 
+def product(req):
+    """This view displays product's page"""
+    query = req.GET.get('code')
+    if not query:
+        prod = Pb_Products.objects.all()
+    else:
+        prod = Pb_Products.objects.filter(
+            code=query)
+    if not prod:
+        return HttpResponseNotFound()
+    else:
+        prod = prod[0]
+        req100 = json.loads(prod.req100.replace('-', ''))
+        ng = prod.nutrition_grades.upper()
+        ng_image = f"/static/assets/img/Nutri-{ng}.png"
+        context = {
+            'masthead_title': prod.product_name,
+            'ng_image': ng_image,
+            'product_searched': prod,
+            'req100': req100
+        }
+    return render(req, 'product.html', context)
+
+
+def user_auth(req):
+    error = False
+    if req.method == "POST":
+        form = ConnectionForm(req.POST)
+        if form.is_valid():
+            username = form.cleaned_data["username"]
+            password = form.cleaned_data["password"]
+            # Vérification
+            user = authenticate(
+                username=username,
+                password=password)
+            if user:
+                login(req, user)
+            else:
+                error = True
+    else:
+        form = ConnectionForm()
+    return render(req, 'authentification.html', locals())
+
+
+def user_reg(req):
+    error = False
+    if req.method == "POST":
+        form = RegisterForm(req.POST)
+        if form.is_valid():
+            temp = req.POST.copy()
+            temp["username"] = temp["email"]
+            form = RegisterForm(temp)
+            if form.is_valid():
+                form.save()
+                return redirect(reverse('home'))
+    else:
+        form = RegisterForm()
+    return render(req, 'register.html', locals())
+
+
+###############################################################################
+# @login_required
+###############################################################################
 @login_required
 def substitute(req):
     """This view saves a substitute in Pb_Favorite
@@ -102,84 +175,18 @@ def substitute(req):
         return render(req, "substitute.html", context)
 
 
-def user_auth(req):
-    error = False
-    if req.method == "POST":
-        form = ConnectionForm(req.POST)
-        if form.is_valid():
-            username = form.cleaned_data["username"]
-            password = form.cleaned_data["password"]
-            # Vérification
-            user = authenticate(
-                username=username,
-                password=password)
-            if user:
-                login(req, user)
-            else:
-                error = True
-    else:
-        form = ConnectionForm()
-    return render(req, 'authentification.html', locals())
-
-
-@login_required
-def user_deauth(req):
-    logout(req)
-    return redirect(reverse('home'))
-
-
-def user_reg(req):
-    error = False
-    if req.method == "POST":
-        form = RegisterForm(req.POST)
-        if form.is_valid():
-            temp = req.POST.copy()
-            temp["username"] = temp["email"]
-            form = RegisterForm(temp)
-            if form.is_valid():
-                form.save()
-                return redirect(reverse('home'))
-    else:
-        form = RegisterForm()
-    return render(req, 'register.html', locals())
-
-
-def terms(req):
-    context = {
-        "masthead_title": "Mentions légales"
-    }
-    return render(req, 'terms.html', context)
-
-
-def product(req):
-    """This view display product's page"""
-    query = req.GET.get('code')
-    if not query:
-        prod = Pb_Products.objects.all()
-    else:
-        prod = Pb_Products.objects.filter(
-            code=query)
-    if not prod:
-        return HttpResponseNotFound()
-    else:
-        prod = prod[0]
-        req100 = json.loads(prod.req100.replace('-', ''))
-        ng = prod.nutrition_grades.upper()
-        ng_image = f"/static/assets/img/Nutri-{ng}.png"
-        context = {
-            'masthead_title': prod.product_name,
-            'ng_image': ng_image,
-            'product_searched': prod,
-            'req100': req100
-        }
-    return render(req, 'product.html', context)
-
-
 @login_required
 def account(req):
+    """This view displays user's informations"""
     f_name = req.user.first_name
     l_name = req.user.last_name
     context = {
         'masthead_title': f"{f_name} {l_name}"
     }
     return render(req, 'account.html', context)
+
+
+@login_required
+def user_deauth(req):
+    logout(req)
+    return redirect(reverse('home'))
