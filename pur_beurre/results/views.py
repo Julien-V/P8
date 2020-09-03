@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 
 from django.http import HttpResponseNotFound
 
@@ -72,19 +72,19 @@ def substitute(req):
     if req.method == "POST":
         query = req.POST.get('code')
         if not query:
-            return redirect('./')
+            return redirect(reverse('home'))
         else:
             prod = Pb_Products.objects.filter(
                 code__contains=int(query))
         if not prod.exists():
-            return redirect('./')
+            return redirect(reverse('home'))
         user = User.objects.filter(username__contains=req.user)[0]
         fav = Pb_Favorite(
             user_id=user,
             product_id=prod[0],
             updated_timestamp=int(dt.now().timestamp()))
         fav.save()
-        return redirect('./home')
+        return redirect(reverse('home'))
     else:
         user = User.objects.filter(
             username__contains=req.user)[0]
@@ -119,7 +119,7 @@ def user_auth(req):
 @login_required
 def user_deauth(req):
     logout(req)
-    return redirect("./")
+    return redirect(reverse('home'))
 
 
 def user_reg(req):
@@ -132,7 +132,7 @@ def user_reg(req):
             form = RegisterForm(temp)
             if form.is_valid():
                 form.save()
-                return redirect("/")
+                return redirect(reverse('home'))
     else:
         form = RegisterForm()
     return render(req, 'register.html', locals())
@@ -151,14 +151,16 @@ def product(req):
         prod = Pb_Products.objects.all()
     else:
         prod = Pb_Products.objects.filter(
-            code__contains=query)[0]
+            code=query)
     if not prod:
         return HttpResponseNotFound()
     else:
+        prod = prod[0]
         req100 = json.loads(prod.req100.replace('-', ''))
         ng = prod.nutrition_grades.upper()
         ng_image = f"/static/assets/img/Nutri-{ng}.png"
         context = {
+            'masthead_title': prod.product_name,
             'ng_image': ng_image,
             'product_searched': prod,
             'req100': req100

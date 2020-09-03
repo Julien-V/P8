@@ -42,7 +42,7 @@ def test_register_view(client):
     url = reverse('register')
     response = client.post(url, form_reg)
     assert response.status_code == 302
-    assert response.url == "/"
+    assert response.url == reverse('home')
 
 
 @pytest.mark.django_db

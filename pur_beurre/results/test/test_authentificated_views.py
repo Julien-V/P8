@@ -18,7 +18,7 @@ def test_add_subs(login_user):
     response = client.post(url, context)
     # we should be redirected to "/"
     assert response.status_code == 302
-    assert response.url == "./home"
+    assert response.url == reverse('home')
     # product code should be in Pb_Favorite
     user = client.session['_auth_user_id']
     subs = Pb_Favorite.objects.filter(user_id=user)
@@ -43,4 +43,4 @@ def test_logout_view(login_user):
     url = reverse('deauthentification')
     response = client.get(url)
     assert response.status_code == 302
-    assert response.url == "./"
+    assert response.url == reverse('home')
