@@ -60,6 +60,10 @@ class Command(BaseCommand):
             for key in product.keys():
                 if key in self.fields:
                     prod_dict[key] = product[key]
+            # code should be int not str
+            if 'code' in prod_dict.keys():
+                if isinstance(prod_dict["code"], str):
+                    prod_dict["code"] = int(prod_dict["code"])
             # Get req100 from 'nutriments'
             if 'nutriments' in prod_dict.keys():
                 req100_temp = dict()
@@ -69,6 +73,7 @@ class Command(BaseCommand):
                 req100 = json.dumps(req100_temp)
                 prod_dict['req100'] = req100
                 prod_dict.pop('nutriments', None)
+            # add creation timestamp
             ts = datetime.datetime.now().timestamp()
             prod_dict['added_timestamp'] = int(ts)
             # insert into Pb_Products
