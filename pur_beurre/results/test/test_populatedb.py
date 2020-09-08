@@ -8,6 +8,8 @@ import pytest
 from results.models import Pb_Products
 from results.management.commands.populatedb import Command
 
+from pur_beurre.settings import off_api
+
 
 def j(json_file):
     """This function opens and returns a json file
@@ -24,19 +26,24 @@ def j(json_file):
 ###############################################################################
 # results.management.commands.populatedb.Command
 ###############################################################################
-@pytest.mark.skip()
-@pytest.mark.django_db
 class TestPopulateDB():
-    def test_valid(self, patch_get_and_load):
-        popdb = Command()
-        patch_get_and_load.values = j("populatedb_valid.json")
-        popdb.handle()
+    off_api_test = off_api.copy()
+    off_api_test["categories"] = ["desserts-au-chocolat"]
+
+    @pytest.mark.django_db
+    def test_popu_valid(self, django_db_blocker, patch_get_and_load):
+        with django_db_blocker.unblock():
+            popdb = Command(self.off_api_test)
+            patch_get_and_load.values = j("populatedb_valid.json")
+            popdb.handle()
         prods = Pb_Products.objects.all()
         assert len(prods) == 2
 
-    def test_invalid(self, patch_get_and_load):
-        popdb = Command()
-        patch_get_and_load.values = j("populatedb_invalid.json")
-        popdb.handle()
+    @pytest.mark.django_db
+    def test_popu_invalid(self, django_db_blocker, patch_get_and_load):
+        with django_db_blocker.unblock():
+            popdb = Command(self.off_api_test)
+            patch_get_and_load.values = j("populatedb_invalid.json")
+            popdb.handle()
         prods = Pb_Products.objects.all()
         assert len(prods) == 1

@@ -13,7 +13,7 @@ from results.models import Pb_Favorite
 # results.views.substitute
 ###############################################################################
 @pytest.mark.django_db
-def test_add_subs(login_user):
+def test_add_subs(login_user, django_db_set):
     """Adding a susbstitute to fav"""
     context = {"code": 3023290008393}
     client = login_user()
@@ -30,7 +30,7 @@ def test_add_subs(login_user):
 
 
 @pytest.mark.django_db
-def test_get_subs(subs_added):
+def test_get_subs(subs_added, django_db_set):
     """Get favorite list"""
     client = subs_added()
     url = reverse('substitute')
@@ -45,7 +45,7 @@ def test_get_subs(subs_added):
 # results.views.user_deauth
 ###############################################################################
 @pytest.mark.django_db
-def test_logout_view(login_user):
+def test_logout_view(login_user, django_db_set):
     client = login_user()
     url = reverse('deauthentification')
     response = client.get(url)

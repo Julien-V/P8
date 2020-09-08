@@ -26,7 +26,7 @@ from django.urls import reverse
         ('product', {'code': 3023290008393})
     ]
 )
-def test_views_public(client, view_name, context):
+def test_views_public(client, view_name, context, django_db_set):
     """Test public views, expects status_code == 200"""
     url = reverse(view_name)
     if not context:

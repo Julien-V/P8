@@ -33,6 +33,7 @@ def exist_db():
             conn = psycopg2.connect(DATABASE)
         conn.close()
     except psycopg2.OperationalError as e:
+        print(e)
         exist = False
     return exist
 

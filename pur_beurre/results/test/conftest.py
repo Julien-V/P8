@@ -14,12 +14,26 @@ from django.urls import reverse
 from results.models import Pb_Favorite
 
 
+def pytest_collection_modifyitems(config, items):
+    list_items = items.copy()
+    # TestPopulateDB should be first
+    for i in items:
+        if "test_popu_" in getattr(i, 'name'):
+            to_move = list_items.pop(list_items.index(i))
+            if getattr(list_items[0], 'name') == 'test_popu_invalid':
+                list_items.insert(1, to_move)
+            else:
+                list_items.insert(0, to_move)
+    items[:] = list_items
+
+
 @pytest.fixture(scope='session')
-def django_db_setup(django_db_setup, django_db_blocker):
+def django_db_set(django_db_setup, django_db_blocker):
     """This fixture load data saved with './manage.py dumpdata'
     command"""
     with django_db_blocker.unblock():
         call_command('loaddata', 'results_data.json')
+        pass
 
 
 @pytest.fixture

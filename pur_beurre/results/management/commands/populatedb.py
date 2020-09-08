@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand
+from django.core.exceptions import ValidationError
 
 import requests
 import json
@@ -13,13 +14,13 @@ from results.models import Pb_Categories_Products as db_cat_prod
 class Command(BaseCommand):
     help = 'Fill DB with OpenFoodFacts data'
 
-    def __init__(self):
-        self.url = off_api['url']
-        self.headers = off_api['headers']
-        self.params = off_api['params']
-        self.categories = off_api['categories']
-        self.fields = off_api['fields']
-        self.req100 = off_api['req100']
+    def __init__(self, args=off_api):
+        self.url = args['url']
+        self.headers = args['headers']
+        self.params = args['params']
+        self.categories = args['categories']
+        self.fields = args['fields']
+        self.req100 = args['req100']
         self.count = 0
 
     def keep_nutri_g_only(self):
@@ -72,37 +73,44 @@ class Command(BaseCommand):
             prod_dict['added_timestamp'] = int(ts)
             # insert into Pb_Products
             prod_db = db_prod(**prod_dict)
-            prod_db.save()
-            cat_prod = db_cat_prod(category_id=cat.id, product_id=prod_db.id)
-            cat_prod.save()
+            try:
+                prod_db.clean()
+                prod_db.save()
+                cat_prod = db_cat_prod(
+                    category_id=cat.id,
+                    product_id=prod_db.id
+                )
+                cat_prod.save()
+            except ValidationError as e:
+                print(e)
 
-    def run(self):
-        for cat in self.categories:
-            # add cat db
-            cat_db = db_cat(category_name=cat)
-            cat_db.save()
-            # get products in cat by OFF API
-            self.result_list = list()
-            params = self.params.copy()
-            params['tag_0'] = cat
-            result = self.get_and_load(params)
-            if "count" in result.keys():
-                self.count = int(result['count'])
-                if 'products' in result.keys():
-                    self.result_list += result['products']
-                    while self.count < len(self.result_list):
-                        params['page'] = int(params['page'])+1
-                        result = self.get_and_load(params)
-                        if 'products' in result.keys():
-                            self.result_list += result['products']
-                        else:
-                            break
-            self.keep_nutri_g_only()
-            self.insert_in_db(cat_db)
+    def run(self, cat):
+        # add cat db
+        cat_db = db_cat(category_name=cat)
+        cat_db.save()
+        # get products in cat from OFF API
+        self.result_list = list()
+        params = self.params.copy()
+        params['tag_0'] = cat
+        result = self.get_and_load(params)
+        if "count" in result.keys():
+            self.count = int(result['count'])
+            if 'products' in result.keys():
+                self.result_list += result['products']
+                while self.count < len(self.result_list):
+                    params['page'] = int(params['page'])+1
+                    result = self.get_and_load(params)
+                    if 'products' in result.keys():
+                        self.result_list += result['products']
+                    else:
+                        break
+        self.keep_nutri_g_only()
+        self.insert_in_db(cat_db)
 
     def handle(self, *args, **options):
-        if db_cat.objects.all().exists():
-            print('[*] DB already populated')
-        else:
-            print('[*] DB empty, running populatedb.run()')
-            self.run()
+        for cat in self.categories:
+            if db_cat.objects.filter(category_name=cat).exists():
+                print(f"[*] '{cat}'' already populated")
+            else:
+                print(f"[*] '{cat}' empty, running populatedb.run('{cat}')")
+                self.run(cat)
