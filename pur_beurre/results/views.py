@@ -45,12 +45,12 @@ def search_results(req):
     if not prod.exists():
         results_exists = False
         prod = Pb_Products.objects.all()
-    # get cat of first elem in prod
-    choosen_nG = prod[0].nutrition_grades
-    cat = pb_cat_prod.objects.filter(product=prod[0])[0].category
-    # get substitutes for choosen cat
-    elem_list = pb_cat_prod.objects.filter(category=cat)
     if results_exists:
+        # get cat of first elem in prod
+        choosen_nG = prod[0].nutrition_grades
+        cat = pb_cat_prod.objects.filter(product=prod[0])[0].category
+        # get substitutes for choosen cat
+        elem_list = pb_cat_prod.objects.filter(category=cat)
         prod_list = [x.product for x in elem_list]
         # get substitutes with better nutrition_grades than product's
         subs_list = [x for x in prod_list if x.nutrition_grades < choosen_nG]
