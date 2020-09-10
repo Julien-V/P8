@@ -105,7 +105,7 @@ def product(req):
     return render(req, 'product.html', context)
 
 
-def user_auth(req):
+def log_in(req):
     error = False
     if req.method == "POST":
         form = ConnectionForm(req.POST)
@@ -125,7 +125,7 @@ def user_auth(req):
     return render(req, 'authentification.html', locals())
 
 
-def user_reg(req):
+def sign_in(req):
     error = False
     if req.method == "POST":
         form = RegisterForm(req.POST)
@@ -187,6 +187,6 @@ def account(req):
 
 
 @login_required
-def user_deauth(req):
+def log_out(req):
     logout(req)
     return redirect(reverse('home'))

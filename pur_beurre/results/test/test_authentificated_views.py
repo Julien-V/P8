@@ -42,7 +42,7 @@ def test_get_subs(subs_added, django_db_set):
 
 
 ###############################################################################
-# results.views.user_deauth
+# results.views.log_out
 ###############################################################################
 @pytest.mark.django_db
 def test_logout_view(login_user, django_db_set):
