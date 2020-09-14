@@ -14,14 +14,25 @@ Le cahier des charges est disponible en cliquant sur ce lien.
 * Authentification de l’utilisateur : création de compte en entrant un mail et un mot de passe, sans possibilité de changer son mot de passe pour le moment.
 
 ## Installation
+
+Ce projet utilise PostgreSQL.
+
 ```
 virtualenv Project8
 cd Project8
 source bin/activate
-pip install -r requirements.py
+pip install -r requirements.txt
 ```
 
+```
+$ python3 --version
+Python 3.8.5
+```
+Read [requirements.txt](https://github.com/Julien-V/P8/blob/master/requirements.txt)
+
+
 ## Lancement
+
 
 ### Serveur de développement
 ```
