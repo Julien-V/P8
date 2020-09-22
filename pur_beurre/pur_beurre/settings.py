@@ -181,7 +181,7 @@ if os.environ.get('IS_HEROKU', None):
         conn_max_age=600, ssl_require=True)
     DEBUG = False
 
-SESSION_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 SECURE_REFERRER_POLICY = 'same-origin'
 
