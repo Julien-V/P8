@@ -183,7 +183,7 @@ if os.environ.get('IS_HEROKU', None):
 
 # SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
-SECURE_REFERRER_POLICY = 'same-origin'
+# SECURE_REFERRER_POLICY = 'same-origin'
 
 # Configure Django App for Heroku.
 django_heroku.settings(locals())
