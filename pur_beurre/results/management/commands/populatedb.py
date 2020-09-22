@@ -102,7 +102,7 @@ class Command(BaseCommand):
             self.count = int(result['count'])
             if 'products' in result.keys():
                 self.result_list += result['products']
-                while self.count < len(self.result_list):
+                while self.count > len(self.result_list):
                     params['page'] = int(params['page'])+1
                     result = self.get_and_load(params)
                     if 'products' in result.keys():
