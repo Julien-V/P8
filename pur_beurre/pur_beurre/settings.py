@@ -180,9 +180,9 @@ if os.environ.get('IS_HEROKU', None):
     DATABASES['default'] = dj_database_url.config(
         conn_max_age=600, ssl_require=True)
     DEBUG = False
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = False  # we're not over https
     SECURE_REFERRER_POLICY = 'same-origin'
+    # SESSION_COOKIE_SECURE = True  # over https only
+    # CSRF_COOKIE_SECURE = True  # over https only
 
 # Configure Django App for Heroku.
 django_heroku.settings(locals())
