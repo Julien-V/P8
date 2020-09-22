@@ -5,7 +5,7 @@ import os
 import json
 import pytest
 
-from results.models import Pb_Products
+from results.models import Product
 from results.management.commands.populatedb import Command
 
 from pur_beurre.settings import off_api
@@ -36,7 +36,7 @@ class TestPopulateDB():
             popdb = Command(self.off_api_test)
             patch_get_and_load.values = j("populatedb_valid.json")
             popdb.handle()
-        prods = Pb_Products.objects.all()
+        prods = Product.objects.all()
         assert len(prods) == 2
 
     @pytest.mark.django_db
@@ -45,5 +45,5 @@ class TestPopulateDB():
             popdb = Command(self.off_api_test)
             patch_get_and_load.values = j("populatedb_invalid.json")
             popdb.handle()
-        prods = Pb_Products.objects.all()
+        prods = Product.objects.all()
         assert len(prods) == 1

@@ -10,9 +10,9 @@ import json
 
 from datetime import datetime as dt
 
-from results.models import Pb_Categories_Products as pb_cat_prod
-from results.models import Pb_Products
-from results.models import Pb_Favorite
+from results.models import CategoriesProducts as pb_cat_prod
+from results.models import Product
+from results.models import Favorite
 
 from results.forms import ConnectionForm, RegisterForm
 
@@ -37,14 +37,14 @@ def search_results(req):
     results_exists = True
     query = req.GET.get('query')
     if not query or not len(query.split()):
-        prod = Pb_Products.objects.all()
+        prod = Product.objects.all()
         results_exists = False
     else:
-        prod = Pb_Products.objects.filter(
+        prod = Product.objects.filter(
             product_name__icontains=query)
     if not prod.exists():
         results_exists = False
-        prod = Pb_Products.objects.all()
+        prod = Product.objects.all()
     if results_exists:
         # get cat of first elem in prod
         choosen_nG = prod[0].nutrition_grades
@@ -85,9 +85,9 @@ def product(req):
     """This view displays product's page"""
     query = req.GET.get('code')
     if not query:
-        prod = Pb_Products.objects.all()
+        prod = Product.objects.all()
     else:
-        prod = Pb_Products.objects.filter(
+        prod = Product.objects.filter(
             code=query)
     if not prod:
         return HttpResponseNotFound()
@@ -146,19 +146,19 @@ def sign_in(req):
 ###############################################################################
 @login_required
 def substitute(req):
-    """This view saves a substitute in Pb_Favorite
+    """This view saves a substitute in Favorite
     or displays saved substitute"""
     if req.method == "POST":
         query = req.POST.get('code')
         if not query:
             return redirect(reverse('home'))
         else:
-            prod = Pb_Products.objects.filter(
+            prod = Product.objects.filter(
                 code__contains=int(query))
         if not prod.exists():
             return redirect(reverse('home'))
         user = User.objects.filter(username__contains=req.user)[0]
-        fav = Pb_Favorite(
+        fav = Favorite(
             user_id=user,
             product_id=prod[0],
             updated_timestamp=int(dt.now().timestamp()))
@@ -167,7 +167,7 @@ def substitute(req):
     else:
         user = User.objects.filter(
             username__contains=req.user)[0]
-        subs = Pb_Favorite.objects.filter(user_id=user)
+        subs = Favorite.objects.filter(user_id=user)
         context = {
             "subs": [x.product_id for x in subs],
             "masthead_title": "Mes Aliments"

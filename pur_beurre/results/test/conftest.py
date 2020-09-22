@@ -11,7 +11,7 @@ from results.management.commands.populatedb import Command
 
 from django.urls import reverse
 
-from results.models import Pb_Favorite
+from results.models import Favorite
 
 
 def pytest_collection_modifyitems(config, items):
@@ -62,15 +62,15 @@ def login_user(client, reg_user):
 
 @pytest.fixture
 def subs_added(login_user):
-    """This fixture adds a substitute in Pb_Favorite"""
+    """This fixture adds a substitute in Favorite"""
     def make_subs():
         context = {"code": 3023290008393}
         client = login_user()
         url = reverse('substitute')
         client.post(url, context)
-        # now product's code should be in Pb_Favorite
+        # now product's code should be in Favorite
         user = client.session['_auth_user_id']
-        subs = Pb_Favorite.objects.filter(user_id=user)
+        subs = Favorite.objects.filter(user_id=user)
         prods_code = [x.product_id.code for x in subs]
         assert context['code'] in prods_code
         return client

@@ -6,9 +6,9 @@ import json
 import datetime
 
 from pur_beurre.settings import off_api
-from results.models import Pb_Categories as db_cat
-from results.models import Pb_Products as db_prod
-from results.models import Pb_Categories_Products as db_cat_prod
+from results.models import Categorie as db_cat
+from results.models import Product as db_prod
+from results.models import CategoriesProducts as db_cat_prod
 
 
 class Command(BaseCommand):
@@ -76,7 +76,7 @@ class Command(BaseCommand):
             # add creation timestamp
             ts = datetime.datetime.now().timestamp()
             prod_dict['added_timestamp'] = int(ts)
-            # insert into Pb_Products
+            # insert into Product
             prod_db = db_prod(**prod_dict)
             try:
                 prod_db.clean()

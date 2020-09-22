@@ -5,11 +5,11 @@ from django.core.exceptions import ValidationError
 
 
 # Create your models here.
-class Pb_Categories(models.Model):
+class Categorie(models.Model):
     category_name = models.TextField()
 
 
-class Pb_Products(models.Model):
+class Product(models.Model):
     product_name = models.TextField()
     brands = models.TextField(null=True)
     code = models.BigIntegerField()
@@ -90,16 +90,16 @@ class Pb_Products(models.Model):
                             f"'{key}': {value} should be <= {maxLen}")
 
 
-class Pb_Favorite(models.Model):
+class Favorite(models.Model):
     user_id = models.ForeignKey(
         User, on_delete=models.CASCADE)
     product_id = models.ForeignKey(
-        Pb_Products, on_delete=models.CASCADE)
+        Product, on_delete=models.CASCADE)
     updated_timestamp = models.BigIntegerField()
 
 
-class Pb_Categories_Products(models.Model):
+class CategoriesProducts(models.Model):
     category = models.ForeignKey(
-        Pb_Categories, on_delete=models.CASCADE)
+        Categorie, on_delete=models.CASCADE)
     product = models.ForeignKey(
-        Pb_Products, on_delete=models.CASCADE)
+        Product, on_delete=models.CASCADE)

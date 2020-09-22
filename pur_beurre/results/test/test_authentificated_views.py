@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 
 from django.urls import reverse
 
-from results.models import Pb_Favorite
+from results.models import Favorite
 
 ###############################################################################
 # results.views.substitute
@@ -22,9 +22,9 @@ def test_add_subs(login_user, django_db_set):
     # we should be redirected to "/"
     assert response.status_code == 302
     assert response.url == reverse('home')
-    # product code should be in Pb_Favorite
+    # product code should be in Favorite
     user = client.session['_auth_user_id']
-    subs = Pb_Favorite.objects.filter(user_id=user)
+    subs = Favorite.objects.filter(user_id=user)
     prods_code = [x.product_id.code for x in subs]
     assert context['code'] in prods_code
 
